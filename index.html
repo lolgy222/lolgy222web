@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lolgy222's Uploading Website</title>
+</head>
+<body>
+    <h1>welcome to my uploading website! (do not upload malware here)</h1>
+    <input type="file" id="fileInput" multiple>
+    <button id="uploadButton">Upload This</button>
+    <script>    document.getElementById('uploadButton').addEventListener('click', async () => {
+        const fileInput = document.getElementById('fileInput');
+        const files = fileInput.files;
+        const folderName = "uploads"; // Example: get this from another input or a fixed value
+
+        if (files.length === 0) {
+            alert('Please select files to upload.');
+            return;
+        }
+
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files[]', files[i]); // 'files[]' for multiple files
+        }
+        formData.append('targetFolder', folderName); // Send folder info to server
+
+        try {
+            const response = await fetch('/upload-endpoint', { // Replace with your server endpoint
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                alert('Files uploaded successfully!');
+            } else {
+                alert('File upload failed.');
+            }
+        } catch (error) {
+            console.error('Error during upload:', error);
+            alert('A error occured while trying to upload this file. Maybe its under 100 GB. Check the console for more information for nerds.');
+        }
+    });</script>
+</body>
+</html>
